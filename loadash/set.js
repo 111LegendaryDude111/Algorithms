@@ -16,7 +16,7 @@ function set(object, path, value) {
     }
   });
 
-  //   return temp;
+  return object;
 }
 
 console.log(set(obj, "a.b.c", 4));
