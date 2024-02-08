@@ -1,9 +1,8 @@
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function difference(array, exludeValues) {
-  //t = O(n^2) M = O(1)
   if (!Array.isArray(array)) {
-    reutrn;
+    return;
   }
 
   return array.filter((el) => !exludeValues.includes(el));
@@ -12,9 +11,8 @@ function difference(array, exludeValues) {
 console.log(difference(arr, [2, 3]));
 
 function difference1(array, exludeValues) {
-  //t = O(n) M = O(n)
   if (!Array.isArray(array)) {
-    reutrn;
+    return;
   }
 
   const map = {};
@@ -29,7 +27,7 @@ function difference1(array, exludeValues) {
     }
   });
 
-  return Object.keys(map).map(el => +el);
+  return Object.keys(map).map((el) => +el);
 }
 
 console.log(difference1(arr, [2, 3]));
