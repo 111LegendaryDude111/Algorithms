@@ -1,19 +1,25 @@
-function zip(...arrays) {
-  //cpu - O(2N + M)  mem - O(N)
-  const map = new Map();
+export function zip(...arrays) {
+  //cpu - O(2N * M)  mem - O(N * M)
+  let maxLength = 0;
 
   arrays.forEach((el) => {
-    for (let index = 0; index < el.length; index++) {
+    maxLength = Math.max(maxLength, el.length);
+  });
+
+  const arr = [];
+  arrays.forEach((el) => {
+    for (let index = 0; index < maxLength; index++) {
       const element = el[index];
-      if (map.has(index)) {
-        map.get(index).push(element);
+      if (arr[index]) {
+        arr[index].push(element);
       } else {
-        map.set(index, [element]);
+        arr[index] = [element];
       }
     }
   });
 
-  return Array.from(map);
+  return arr;
 }
 
-console.log(zip(["a", "b"], [1, 2], [true, false])); // => [['a', 1, true], ['b', 2, false]]
+// console.log(zip(["a", "b"], [1, 2], [true, false])); // => [['a', 1, true], ['b', 2, false]]
+// console.log(zip(["a", "b", "c"], [1, 2, 3], [true, false])); // => [['a', 1, true], ['b', 2, false]]
