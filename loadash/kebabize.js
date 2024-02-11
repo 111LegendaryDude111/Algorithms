@@ -1,3 +1,5 @@
+import { isUpperCase } from "./utils";
+
 const words = [
   "StackOverflow",
   "camelCase",
@@ -39,10 +41,6 @@ function kebabize(string) {
   }
 
   return temp;
-}
-
-function isUpperCase(s) {
-  return s.toUpperCase() === s;
 }
 
 console.log(words.map((el) => kebabize(el)));
