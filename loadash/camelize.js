@@ -17,13 +17,18 @@ const words = [
 ];
 
 function camelize(string) {
+  const symbols = [".", "-", " ", "_"];
+
   if (isUpperCase(string)) {
-    return string.toLowerCase();
+    return string
+      .split("")
+      .filter((el) => !symbols.includes(el))
+      .join("")
+      .toLowerCase();
   }
 
   let temp = "";
   let tempString = "";
-  const symbols = [".", "-", " ", "_"];
 
   for (let index = 0; index < string.length; index++) {
     const element = string[index];
@@ -39,7 +44,11 @@ function camelize(string) {
       continue;
     }
     if (symbols.includes(prevEl) && !symbols.includes(element)) {
-      temp += element.toUpperCase();
+      if (temp) {
+        temp += element.toUpperCase();
+      } else {
+        temp += element.toLowerCase();
+      }
       continue;
     }
     if (isUpperCase(element) && isUpperCase(nextEl)) {
