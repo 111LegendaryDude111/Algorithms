@@ -20,6 +20,14 @@ export function cloneDeep(object) {
     return object;
   }
 
+  if (object instanceof Map) {
+    return new Map(object);
+  }
+
+  if (object instanceof Set) {
+    return new Set(object);
+  }
+
   let currentValue;
   let result = Array.isArray(object) ? [] : {};
 
@@ -34,4 +42,8 @@ export function cloneDeep(object) {
   return result;
 }
 
-const t = cloneDeep(list);
+const l = cloneDeep(list);
+const o = cloneDeep(objects);
+
+console.log(l);
+console.log(o[0] === objects[0]);
