@@ -15,7 +15,7 @@ const list = {
   },
 };
 
-function cloneDeep(object) {
+export function cloneDeep(object) {
   if (!isObject(object)) {
     return object;
   }
@@ -35,5 +35,3 @@ function cloneDeep(object) {
 }
 
 const t = cloneDeep(list);
-
-console.log(t);
