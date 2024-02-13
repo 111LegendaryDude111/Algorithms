@@ -24,6 +24,10 @@ export function cloneDeep(object) {
     return new Map(object);
   }
 
+  if (object instanceof Date) {
+    return new Date(object);
+  }
+
   if (object instanceof Set) {
     return new Set(object);
   }
