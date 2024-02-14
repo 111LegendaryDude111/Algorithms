@@ -14,13 +14,13 @@ const obj = {
 };
 
 function pickDeep(object, path) {
-  //cpu - O(m) mem - O(n)
+  //cpu - O(M) mem - O(N)
   if (!isObject(object)) {
     return object;
   }
   const newObj = {};
   path.forEach((el) => {
-    if (object[el]) {
+    if (object.hasOwnProperty(el)) {
       if (isObject(object[el])) {
         newObj[el] = pickDeep(object[el], path);
       } else {
@@ -32,7 +32,7 @@ function pickDeep(object, path) {
   return newObj;
 }
 
-const p = pickDeep(obj, ["a", "b", "c"]); // { a: 5, b: { a: 228, b: "asdf", c: { a: 4 } }, c: 0 }
+const p = pickDeep(obj, ["a", "b"]); // { a: 5, b: { a: 228, b: "asdf", c: { a: 4 } }, c: 0 }
 
 console.log(p);
 

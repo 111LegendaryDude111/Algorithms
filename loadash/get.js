@@ -1,7 +1,7 @@
 import { isNil, isObject } from "./utils.js";
 import { stringFromPath } from "./stringFromPath.js";
 
-const obj = { a: { b: { c: "foo" } } };
+const obj = { a: { b: { c: "" } } };
 const obj1 = { a: { b: { c: 3 } } };
 const object1 = { a: [{ b: [{ c: 3 }] }] };
 const object2 = { a: [{ b: { c: 3 } }] };
@@ -25,7 +25,7 @@ function get(object, path, defaultValue) {
 
     temp = temp[key];
 
-    if (!temp) {
+    if (temp === null && temp === undefined) {
       return defaultValue;
     }
   }
@@ -33,7 +33,7 @@ function get(object, path, defaultValue) {
   return temp ?? defaultValue;
 }
 
-console.log(get(obj1, "a.b.c"));
+console.log(get(obj, "a.b.c"));
 console.log(get(object1, "a[0].b[0].c"));
 console.log(get(object2, "a[0].b.c", "default"));
 console.log(get(obj1, "a.b.sadfdsa"));

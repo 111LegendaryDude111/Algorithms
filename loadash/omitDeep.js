@@ -15,15 +15,17 @@ const obj = {
 };
 
 function omitDeep(object, path) {
-  //cpu - O(m2) mem - O(n)
+  //cpu - O(N + M ) mem - O(N + M)
   if (!isObject(object)) {
     return object;
   }
   const newObj = {};
 
+  const pathSet = new Set(path);
+
   for (const key in object) {
     const cur = object[key];
-    if (path.includes(key)) {
+    if (pathSet.has(key)) {
       continue;
     } else {
       if (isObject(cur)) {
