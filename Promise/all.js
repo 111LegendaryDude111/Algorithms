@@ -11,7 +11,23 @@ Promise.all2 = async function (array) {
   return result;
 };
 
-Promise.all2([
+Promise.all3 = async function (array) {
+  return new Promise((resolve, reject) => {
+    const result = [];
+
+    array.forEach((el, i) => {
+      el.then((res) => {
+        result.push(res);
+
+        if (i === array.length - 1) {
+          resolve(result);
+        }
+      }).catch((e) => reject(e));
+    });
+  });
+};
+
+Promise.all3([
   new Promise((resolve, reject) => {
     setTimeout(() => resolve("one"), 1000);
   }),

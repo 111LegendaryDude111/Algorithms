@@ -14,7 +14,33 @@ Promise.allSettled2 = async function (array) {
   return result;
 };
 
-Promise.allSettled2([
+Promise.allSettled3 = function (array) {
+  return new Promise(async (resolve) => {
+    const result = [];
+    let count = 1;
+    array.forEach((element) => {
+      element
+        .then((el) => {
+          result.push({ status: "fulfilled", value: el });
+          count++;
+
+          if (count === array.length) {
+            resolve(result);
+          }
+        })
+        .catch((el) => {
+          result.push({ status: "rejected", value: el });
+          count++;
+
+          if (count === array.length) {
+            resolve(result);
+          }
+        });
+    });
+  });
+};
+
+Promise.allSettled3([
   new Promise((resolve, reject) => {
     setTimeout(() => resolve("one"), 1000);
   }),
