@@ -14,7 +14,6 @@
 
 function buyers(array) {
   return new Promise(async (resolve) => {
-    const agreeBuyers = [];
     const map = new Map();
 
     array.forEach((element, index) => {
@@ -43,7 +42,6 @@ function buyers(array) {
 const bestAnswer = function (array) {
   //index, accept
   return new Promise((resolve) => {
-    const result = [];
     const rejects = [];
     array.forEach(({ index, accept }, i) => {
       accept
@@ -58,61 +56,13 @@ const bestAnswer = function (array) {
           rejects.push({ index, e });
         })
         .finally(() => {
-          if (i === array.length - 1) {
+          if (rejects.length === array.length) {
             resolve(false);
           }
         });
     });
   });
 };
-
-// function buyers(array) {
-//   return new Promise((resolve) => {
-//     const agreeBuyers = [];
-//     const map = {};
-//     array.forEach((el) => {
-//       const { price } = el;
-//       if (map[price]) map[price] = map[price] + 1;
-//       else map[price] = 0;
-//     });
-//     const mapRejected = {}
-
-//     array.forEach((element, index) => {
-//       const { price, accepts } = element;
-
-//       accepts()
-//         .then((el) => {
-//           if (!el){
-//             if (mapRejected[price]) mapRejected[price] = mapRejected[price] + 1;
-//             else mapRejected[price] = 0;
-//             return
-//           }
-
-//           if (price === 10) {
-//             resolve({ index, price, accept: el });
-//           }
-
-//           if(price === 5 && mapRejected[10] === map[10] ){
-//             resolve()
-//           }
-
-//           agreeBuyers.push({ index, price, accept: el });
-//         })
-//         .finally(() => {
-//           if (index === array.length - 1) {
-//             if (agreeBuyers.length > 0) {
-//               const agreeBuyer = agreeBuyers.sort(
-//                 (a, b) => a.price - b.price
-//               )[0];
-//               resolve(agreeBuyer);
-//             } else {
-//               resolve(-1);
-//             }
-//           }
-//         });
-//     });
-//   });
-// }
 
 const buyersTest = [
   { price: 10, accepts: () => Promise.resolve(false) },
