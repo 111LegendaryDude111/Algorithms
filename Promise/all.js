@@ -11,7 +11,7 @@ Promise.all2 = async function (array) {
   return result;
 };
 
-Promise.all3 = async function (array) {
+Promise.all3 = function (array) {
   return new Promise((resolve, reject) => {
     const result = [];
 

@@ -13,158 +13,138 @@
 // }
 
 function buyers(array) {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     const agreeBuyers = [];
+    const map = new Map();
 
     array.forEach((element, index) => {
       const { price, accepts } = element;
 
-      accepts()
-        .then((el) => {
-          if (!el) return;
+      if (map.has(price)) {
+        map.get(price).push({ index, accept: accepts() });
+      } else {
+        map.set(price, [{ index, accept: accepts() }]);
+      }
+    });
 
-          if (price === 10) {
-            resolve({ index, price, accept: el });
+    const temp = Array.from(map).sort((a, b) => b[0] - a[0]);
+
+    for (let [price, buyersAnswers] of temp) {
+      const result = await bestAnswer(buyersAnswers).then((el) => el);
+      if (result) {
+        resolve({ ...result, price });
+      }
+    }
+
+    resolve(-1);
+  });
+}
+
+const bestAnswer = function (array) {
+  //index, accept
+  return new Promise((resolve) => {
+    const result = [];
+    const rejects = [];
+    array.forEach(({ index, accept }, i) => {
+      accept
+        .then((res) => {
+          if (res) {
+            resolve({ index, accept: res });
+          } else {
+            rejects.push({ index, e });
           }
-
-          agreeBuyers.push({ index, price, accept: el });
+        })
+        .catch((e) => {
+          rejects.push({ index, e });
         })
         .finally(() => {
-          if (index === array.length - 1) {
-            if (agreeBuyers.length > 0) {
-              const agreeBuyer = agreeBuyers.sort(
-                (a, b) => a.price - b.price
-              )[0];
-              resolve(agreeBuyer);
-            } else {
-              resolve(-1);
-            }
+          if (i === array.length - 1) {
+            resolve(false);
           }
         });
     });
   });
-}
+};
+
+// function buyers(array) {
+//   return new Promise((resolve) => {
+//     const agreeBuyers = [];
+//     const map = {};
+//     array.forEach((el) => {
+//       const { price } = el;
+//       if (map[price]) map[price] = map[price] + 1;
+//       else map[price] = 0;
+//     });
+//     const mapRejected = {}
+
+//     array.forEach((element, index) => {
+//       const { price, accepts } = element;
+
+//       accepts()
+//         .then((el) => {
+//           if (!el){
+//             if (mapRejected[price]) mapRejected[price] = mapRejected[price] + 1;
+//             else mapRejected[price] = 0;
+//             return
+//           }
+
+//           if (price === 10) {
+//             resolve({ index, price, accept: el });
+//           }
+
+//           if(price === 5 && mapRejected[10] === map[10] ){
+//             resolve()
+//           }
+
+//           agreeBuyers.push({ index, price, accept: el });
+//         })
+//         .finally(() => {
+//           if (index === array.length - 1) {
+//             if (agreeBuyers.length > 0) {
+//               const agreeBuyer = agreeBuyers.sort(
+//                 (a, b) => a.price - b.price
+//               )[0];
+//               resolve(agreeBuyer);
+//             } else {
+//               resolve(-1);
+//             }
+//           }
+//         });
+//     });
+//   });
+// }
 
 const buyersTest = [
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10
-  { price: 5, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 5, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 10, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 10, но отказался
-  { price: 5, accepts: () => Promise.resolve(true) }, // Пользователь готов купить за 5 и принял предложение
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(true) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(true) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 2, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 5, accepts: () => Promise.resolve(false) }, // Пользователь готов купить за 2, но отказался
-  { price: 10, accepts: () => Promise.resolve(true) }, // Пользователь готов купить за 10, но отказался
+  { price: 10, accepts: () => Promise.resolve(false) },
+  { price: 5, accepts: () => Promise.resolve(false) },
+  { price: 2, accepts: () => Promise.resolve(false) },
+  { price: 10, accepts: () => Promise.resolve(false) },
+  { price: 10, accepts: () => Promise.resolve(false) },
+  { price: 10, accepts: () => Promise.resolve(false) },
+  { price: 10, accepts: () => Promise.resolve(false) },
+  {
+    price: 5,
+    accepts: () =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(true), 2_000);
+      }),
+  },
+  {
+    price: 2,
+    accepts: () =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(true), 1_000);
+      }),
+  },
+  {
+    price: 10,
+    accepts: () =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(true), 5_000);
+      }),
+  },
 ];
 
 buyers(buyersTest)
   .then((el) => console.log(el))
   .catch((e) => console.log(e));
-
-// function buyers(array) {
-//   return new Promise((resolve, reject) => {
-//     let index = 0;
-//     let result;
-//     let stop = array.length - 1 === index ? true : false;
-//     let tenCount;
-//     let fiveCount;
-//     let twoCount;
-//     const rejects = [];
-//     array.forEach((element) => {
-//       const { price } = element;
-//       if (price === 10) {
-//         tenCount = tenCount + 1;
-//       } else if (price === 5) {
-//         fiveCount = fiveCount + 1;
-//       } else {
-//         twoCount = twoCount + 1;
-//       }
-//     });
-//     array.sort((a, b) => a - b);
-
-//     function next() {
-//       if (result && result.price === 10 && result.accept) {
-//         resolve(result);
-//         return;
-//       }
-
-//       if (
-//         result &&
-//         result.price === 5 &&
-//         result.accept &&
-//         rejects.length - 1 === tenCount
-//       ) {
-//         resolve(result);
-//         return;
-//       }
-
-//       if (
-//         result &&
-//         result.price === 2 &&
-//         result.accept &&
-//         rejects.length - 1 === fiveCount + tenCount
-//       ) {
-//         resolve(result);
-//         return;
-//       }
-
-//       if (rejects.length === array.length) {
-//         return resolve(-1);
-//       }
-
-//       while (!stop && index < array.length) {
-//         let { accepts, price } = array.pop();
-//         index++;
-//         accepts()
-//           .then((el) => {
-//             console.log(el)
-//             if (el) {
-//               result = { index, price, accept: el };
-//             } else {
-//               rejects.push({ index, price, el });
-//             }
-//           })
-//           .catch((e) => e)
-//           .finally(() => {
-//             next();
-//           });
-//       }
-//     }
-
-//     next();
-//   });
-// }
