@@ -4,33 +4,34 @@ class EventEmitter {
   }
 
   on(eventName, fn) {
-    const event = this.events[eventName];
-    if (event) {
-      return;
+    if (!this.events[eventName]) {
+      this.events[eventName] = [fn];
+      return this;
     }
-    event = [fn];
+
+    this.events[eventName].push(fn);
+
+    return this;
   }
 
   unsubscribe() {
-    const event = this.events[eventName];
-    if (!event) {
+    if (!this.events[eventName]) {
       return;
     }
 
-    event = null;
+    this.events[eventName] = null;
   }
 
   emit(eventName, ...args) {
-    const event = this.events[eventName];
-    if (event) {
-      event.forEach((fn) => fn(...args));
+    if (this.events[eventName]) {
+      this.events[eventName].forEach((fn) => fn(...args));
+
+      return this;
     }
 
-    return null;
+    return this;
   }
 }
 
 let e = new EventEmitter();
-e.on("happy", console.log);
-e.emit("happy");
-e.emit("happy", "bla", "bla", "bla");
+e.on("happy", console.log).emit("happy").emit("happy", "bla", "bla", "bla");
