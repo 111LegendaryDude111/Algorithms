@@ -4,26 +4,29 @@ class EventEmitter {
   }
 
   on(eventName, fn) {
-    if (this.events[eventName]) {
+    const event = this.events[eventName];
+    if (event) {
       return;
     }
-    this.events[eventName] = fn;
+    event = [fn];
   }
 
   unsubscribe() {
-    if (!this.events[eventName]) {
+    const event = this.events[eventName];
+    if (!event) {
       return;
     }
 
-    this.events[eventName] = null;
+    event = null;
   }
 
   emit(eventName, ...args) {
-    if(args.length > 1){
-      this.events[eventName].call(null, 'zzzzz');
+    const event = this.events[eventName];
+    if (event) {
+      event.forEach((fn) => fn(...args));
     }
 
-    this.events[eventName].apply(null, args);
+    return null;
   }
 }
 
