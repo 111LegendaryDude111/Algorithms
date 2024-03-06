@@ -10,35 +10,33 @@ sumBig([9, 9, 9, 9], [1, 2, 3]) // [1, 0, 1, 2, 2]
 */
 
 function sumBig(arr1, arr2) {
-  //cpu - O(3N + (N + M)) mem - O(N + M)
+  //cpu - O(N + M) mem - O(N + M)
   const maxLength = Math.max(arr1.length, arr2.length);
   let remainder = 0;
   let result = [];
 
-  arr1.reverse();
-  arr2.reverse();
+  let indexFirstArr = arr1.length - 1;
+  let indexSecondArr = arr2.length - 1;
 
   for (let index = 0; index < maxLength; index++) {
-    const element1 = arr1[index] ?? 0;
-    const element2 = arr2[index] ?? 0;
+    const element1 = arr1[indexFirstArr] ?? 0;
+    const element2 = arr2[indexSecondArr] ?? 0;
+    indexFirstArr--;
+    indexSecondArr--;
 
-    let temp = element1 + element2;
-
-    if (remainder) {
-      temp += remainder;
-      remainder = 0;
-    }
+    let temp = element1 + element2 + remainder;
 
     if (temp >= 10) {
-      temp = temp - 10;
-      remainder++;
+      result.push(temp % 10);
+      remainder = Math.floor(temp / 10);
+    } else {
+      result.push(temp);
+      remainder = 0;
     }
+  }
 
-    result.push(temp);
-
-    if (index === maxLength - 1 && remainder) {
-      result.push(remainder);
-    }
+  if (remainder) {
+    result.push(remainder);
   }
 
   return result.reverse();
