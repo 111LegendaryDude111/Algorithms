@@ -10,7 +10,6 @@ class LRUCache {
 
   put(key, value) {
     if (this.maxSize === this.#actualSize) {
-      //delete tail
       let currentTail = this.#tail;
 
       this.#links.delete(currentTail.key);
