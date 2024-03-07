@@ -1,30 +1,60 @@
 const maximumProduct = function (array) {
-  let result = -Infinity;
-  array.sort((a, b) => a - b);
+  const maxNumbers = Array(3);
+  const minNumbers = Array(2);
+  let maxNumbersIteration = 0;
+  let minNumbersIteration = 0;
 
-  console.log(array);
-  array.forEach((_, i) => {
-    let left = array[i];
-    let pivot = array[i + 1];
-    let right = array[i + 2];
+  array.forEach((element) => {
+    if (maxNumbersIteration === 3) {
+      maxNumbersIteration = 0;
+    }
 
-    if (left !== undefined && pivot !== undefined && right !== undefined) {
-      let temp = left * pivot * right;
-      result = Math.max(temp, result);
+    if (minNumbersIteration === 3) {
+      minNumbersIteration = 0;
+    }
+
+    if (element >= 0) {
+      if (element > maxNumbers[maxNumbersIteration]) {
+        maxNumbers[maxNumbersIteration] = element;
+        maxNumbersIteration++;
+        return;
+      }
+
+      if (maxNumbers[maxNumbersIteration] === undefined) {
+        maxNumbers[maxNumbersIteration] = element;
+        maxNumbersIteration++;
+        return;
+      }
+    } else {
+      if (element < minNumbers[minNumbersIteration]) {
+        minNumbers[minNumbersIteration] = element;
+        minNumbersIteration++;
+        return;
+      }
+
+      if (minNumbers[minNumbersIteration] === undefined) {
+        minNumbers[minNumbersIteration] = element;
+        minNumbersIteration++;
+        return;
+      }
     }
   });
 
-  return result;
+  const result = maxNumbers.concat(minNumbers).filter(el => Boolean(el))
+  console.log(result);
+  return 0;
 };
 
+let nums0 = [-1000, -1000, 1000];
 let nums1 = [1, 2, 3];
 let nums2 = [1, 2, 3, 4];
 let nums3 = [-1, -2, -3];
 let nums4 = [-100, -98, -1, 2, 3, 4];
 
-console.log(maximumProduct(nums1));
-console.log(maximumProduct(nums2));
-console.log(maximumProduct(nums3));
+console.log(maximumProduct(nums0));
+// console.log(maximumProduct(nums1));
+// console.log(maximumProduct(nums2));
+// console.log(maximumProduct(nums3));
 console.log(maximumProduct(nums4));
 
 /*
