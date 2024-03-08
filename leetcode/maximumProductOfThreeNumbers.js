@@ -1,6 +1,6 @@
 const maximumProduct = function (array) {
   const maxNumbers = Array(3);
-  const minNumbers = Array(2);
+  const minNumbers = Array(3);
   let maxNumbersIteration = 0;
   let minNumbersIteration = 0;
 
@@ -40,9 +40,30 @@ const maximumProduct = function (array) {
     }
   });
 
-  const result = maxNumbers.concat(minNumbers).filter(el => Boolean(el))
-  console.log(result);
-  return 0;
+  let maxNumFromMaxNumbers = Number.MIN_SAFE_INTEGER;
+  let sumOfMax = maxNumbers.reduce((acc, cur) => {
+    if (cur) {
+      maxNumFromMaxNumbers = Math.max(cur, maxNumFromMaxNumbers);
+      acc *= cur;
+    }
+    return acc;
+  }, 1);
+
+  let maxNumFromMinNumbers = Number.MAX_SAFE_INTEGER;
+  let sumOfMin = minNumbers.reduce((acc, cur) => {
+    if (cur) {
+      maxNumFromMinNumbers = Math.min(cur, maxNumFromMinNumbers);
+      acc *= cur;
+    }
+    return acc;
+  }, 1);
+
+  console.log(sumOfMax, maxNumFromMaxNumbers, sumOfMin,  maxNumFromMinNumbers);
+  
+
+
+  // console.log(maxNumbers, minNumbers);
+  return Math.max(sumOfMin,sumOfMax,)
 };
 
 let nums0 = [-1000, -1000, 1000];
