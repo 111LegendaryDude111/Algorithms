@@ -42,66 +42,58 @@
 
 */
 
-class Defer {
-  constructor(value) {
-    this.value = value;
+class Deferred {
+  #thenQueCallback = [];
+  #deferredResult;
+
+  constructor(callback, fulfilled) {
+    this.pending = true;
+    this.fulfilled = fulfilled;
+    if (callback) {
+      callback(this.#resolve.bind(this));
+    }
+  }
+
+  #resolve(value) {
+    this.#deferredResult = value;
+
+    if (this.#thenQueCallback) {
+      let tempRes;
+      this.#thenQueCallback.forEach((cb, i) => {
+        if (i === 0) {
+          tempRes = cb(this.#deferredResult);
+        } else {
+          tempRes = cb(tempRes);
+        }
+      });
+    }
+
+    this.fulfilled = value;
+    return this;
   }
 
   then(func) {
-    const result = func(this.value);
+    if (this.fulfilled) {
+      const result = func(this.#deferredResult);
 
-    return new Defer(result);
-  }
-}
-
-class Deferred extends Defer {
-  constructor(callback) {
-    super(null);
-    delete this.value;
-    this.pending = true;
-    callback(this.resolve.bind(this));
-  }
-
-  resolve(value) {
-    delete this.pending;
-    this.fulfilled = value;
-    this.value = value;
-    return new Defer(value);
+      return new Deferred((res) => res(result));
+    } else {
+      this.#thenQueCallback.push(func);
+    }
   }
 }
 
 // const p = new Deferred((res) => res(5));
-// p.resolve();
 
-// function Deferred(callback) {
-//   return {
-//     resolve(value) {
-//       return {
-//         then(fn) {
-//           const res = fn(value);
+// const d = new Deferred((resolve) => {
+//   setTimeout(() => {
+//     resolve(15);
+//   }, 1_000);
+// }).then(console.log);
 
-//           console.log(res);
-//           // return {
-//           //   then(fn) {
-//           //     return fn(res);
-//           //   },
-//           // };
-//         },
-//       };
-//     },
-//   };
-// }
+const d = new Deferred((res) => res(10));
 
-// const d = new Deferred((res) => res(10));
-
-const d = new Deferred((resolve) => {
-  setTimeout(() => {
-    resolve(15);
-  }, 1_000);
-}).then( console.log)
-
-
-//1)
+// 1)
 // d.then((value) => {
 //   console.log(value); // 10
 //   return 15;
@@ -110,17 +102,17 @@ const d = new Deferred((resolve) => {
 // });
 
 //2)
-// d.then((value) => {
-//   console.log(value); // 10
+d.then((value) => {
+  console.log(value); // 10
 
-//   return new Deferred((resolve) => {
-//     setTimeout(() => {
-//       resolve(15);
-//     }, 1_000);
-//   });
-// }).then((value) => {
-//   console.log(value); // 15
-// });
+  return new Deferred((resolve) => {
+    setTimeout(() => {
+      resolve(15);
+    }, 1_000);
+  });
+}).then((value) => {
+  console.log(value); // 15
+});
 
 //3)
 // setTimeout(() => {
@@ -134,4 +126,4 @@ const d = new Deferred((resolve) => {
 // console.log(p2 === p); // false
 // p.then(console.log); // 5
 // p.then(console.log); // 5
-// p2.then(console.log); // 1
+// p2.then(console.log); // 10
