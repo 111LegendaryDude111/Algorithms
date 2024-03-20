@@ -1,51 +1,55 @@
-class $ {
+class DOMWrapper {
   constructor(selector) {
-    this.node = document.querySelector(selector);
+    this.nodes = document.querySelectorAll(selector);
   }
 
   addClass(className) {
-    if (!this.node) return;
-    console.log(this.node.classList);
+    if (this.nodes.length < 1) return;
 
-    this.node.classList.add(className);
+    this.nodes.forEach((el) => el.classList.add(className));
 
     return this;
   }
 
   toggleClass(className) {
-    if (!this.node) return;
-    const isContain = this.node.classList.contains(className);
+    if (this.nodes.length < 1) return;
 
-    console.log(this.node);
-    this.node.classList.toggle(className, !isContain);
+    this.nodes.forEach((el) => {
+      const isContain = el.classList.contains(className);
+      el.classList.toggle(className, !isContain);
+    });
 
     return this;
   }
 
   removeClass(className) {
-    if (!this.node) return;
+    if (this.nodes.length < 1) return;
 
-    this.node.classList.remove(className);
+    this.nodes.forEach((el) => el.classList.remove(className));
 
     return this;
   }
   css(cssObject) {
-    if (!this.node) return;
+    if (this.nodes.length < 1) return;
 
-    this.node.style = cssObject;
+    this.nodes.forEach((el) => (el.style = cssObject));
 
     return this;
   }
 
   html(htmlText) {
-    if (!this.node) return;
-    this.node.innerHTML = htmlText;
+    if (this.nodes.length < 1) return;
+    this.nodes.forEach((el) => (el.innerHTML = htmlText));
 
     return this;
   }
 }
 
-const $node = new $(".js-node");
+function $(selector) {
+  return new DOMWrapper(selector);
+}
+
+const $node = $(".js-node");
 
 $node
   .addClass("node")

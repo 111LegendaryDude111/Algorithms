@@ -29,7 +29,7 @@ class Deferred {
   then(func) {
     if (this.fulfilled) {
       const result = func(this.#deferredResult);
-      
+
       if (result instanceof Deferred) {
         return result;
       } else {
@@ -37,6 +37,8 @@ class Deferred {
       }
     } else {
       this.#thenQueCallback.push(func);
+
+      return this;
     }
   }
 }
@@ -47,7 +49,20 @@ class Deferred {
 //   }, 1_000);
 // }).then(console.log);
 
-const d = new Deferred((res) => res(10));
+const d = new Deferred((res) => {
+  setTimeout(() => {
+    res(10);
+  }, 1_000);
+});
+
+d.then((value) => {
+  console.log(value); // 10
+  return 15;
+}).then((value) => {
+  console.log(value); // 15
+});
+
+// const d = new Deferred((res) => res(10));
 
 // 1)
 // d.then((value) => {
@@ -78,7 +93,9 @@ const d = new Deferred((res) => res(10));
 //4)
 
 const p = new Deferred((res) => res(5));
-const p2 = p.then((value) => 10);
+const p2 = p.then((value) => {
+  console.log(10);
+});
 console.log(p2 === p); // false
 p.then(console.log); // 5
 p.then(console.log); // 5
