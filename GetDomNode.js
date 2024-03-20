@@ -14,7 +14,7 @@ class $ {
 
   toggleClass(className) {
     if (!this.node) return;
-    const isContain = this.node.classList.contains("className");
+    const isContain = this.node.classList.contains(className);
 
     console.log(this.node);
     this.node.classList.toggle(className, !isContain);
