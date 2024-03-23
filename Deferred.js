@@ -73,17 +73,17 @@ d.then((value) => {
 // });
 
 //2)
-// d.then((value) => {
-//   console.log(value); // 10
+d.then((value) => {
+  console.log(value); // 10
 
-//   return new Deferred((resolve) => {
-//     setTimeout(() => {
-//       resolve(15);
-//     }, 1_000);
-//   });
-// }).then((value) => {
-//   console.log(value); // 15
-// });
+  return new Deferred((resolve) => {
+    setTimeout(() => {
+      resolve(15);
+    }, 1_000);
+  });
+}).then((value) => {
+  console.log(value); // 15
+});
 
 //3)
 // setTimeout(() => {
@@ -92,11 +92,11 @@ d.then((value) => {
 
 //4)
 
-const p = new Deferred((res) => res(5));
-const p2 = p.then((value) => {
-  console.log(10);
-});
-console.log(p2 === p); // false
-p.then(console.log); // 5
-p.then(console.log); // 5
-p2.then(console.log); // 10
+// const p = new Deferred((res) => res(5));
+// const p2 = p.then((value) => {
+//   console.log(10);
+// });
+// console.log(p2 === p); // false
+// p.then(console.log); // 5
+// p.then(console.log); // 5
+// p2.then(console.log); // 10
