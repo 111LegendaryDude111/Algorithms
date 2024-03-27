@@ -3,7 +3,7 @@ function fetch(from) {
   const data = {
     A: ["B", "D"],
     B: ["C", "N", "Z"],
-    D: ["E", "F"],
+    D: ["F", "E"],
     F: ["S"],
   };
 
@@ -11,50 +11,78 @@ function fetch(from) {
 }
 
 function getRoute(from, to) {
-  let result = [from];
-  const stack = [...fetch(from)];
+  let result = [];
+  const queue = [from];
+  const visited = new Set();
 
-  while (stack.length > 0) {
-    const currentWay = stack.pop();
+  while (queue.length > 0) {
+    const currentWay = queue.shift();
+    visited.add(currentWay);
     result.push(currentWay);
-    const isFind = fetch(currentWay) && fetch(currentWay).includes(to);
+    const isFind = currentWay === to;
 
     if (isFind) {
       result.push(to);
       return result;
-    } else if (fetch(currentWay)) {
-      stack.push(...fetch(currentWay));
-    } else {
-      result = [from];
+    } else if (fetch(currentWay) && fetch(currentWay).length > 0) {
+      for (const neighbor of fetch(currentWay)) {
+        if (!visited.has(neighbor)) {
+          queue.push(neighbor);
+        }
+      }
     }
   }
   return;
 }
 console.log(getRoute("A", "F")); // [ 'A', 'D', 'F' ]
 console.log(getRoute("A", "S")); // [ 'A', 'D', 'F', 'S' ]
+// console.log(getRoute("D", "S")); //  [ 'D', 'F', 'S' ]
+// console.log(getRoute("A", "Z")); //  [ 'A', 'B', 'Z' ]
+// console.log(getRoute("B", "S")); //  undefined
+
+/*
+
+GPT
+  function getRoute(start, end) {
+  const visited = new Set(); // Хранит уже посещенные точки
+  const queue = [[start]]; // Очередь для поиска в ширину, начальный путь содержит только начальную точку
+
+  while (queue.length > 0) {
+    const path = queue.shift(); // Извлекаем следующий путь из очереди
+
+    const current = path[path.length - 1]; // Получаем текущую точку из пути
+
+    if (current === end) {
+      // Если мы достигли конечной точки, возвращаем найденный путь
+      return path;
+    }
+
+    // Если текущая точка не была посещена ранее
+    if (!visited.has(current)) {
+      visited.add(current); // Отмечаем текущую точку как посещенную
+
+      // Получаем все места, куда можно поехать из текущей точки
+      const nextPlaces = fetch(current);
+
+      // Проверяем, что nextPlaces не является undefined и имеет свойство Symbol.iterator (то есть, он является итерируемым)
+      if (nextPlaces !== undefined && nextPlaces[Symbol.iterator]) {
+        // Для каждого места, куда можно поехать, создаем новый путь, добавляем его в очередь
+        for (const next of nextPlaces) {
+          const newPath = [...path, next]; // Создаем новый путь, добавляя следующее место к текущему пути
+          queue.push(newPath); // Добавляем новый путь в очередь
+        }
+      }
+    }
+  }
+
+  // Если путь не найден, возвращаем undefined
+  return undefined;
+}
+
+console.log(getRoute("A", "F")); // [ 'A', 'D', 'F' ]
+console.log(getRoute("A", "S")); // [ 'A', 'D', 'F', 'S' ]
 console.log(getRoute("D", "S")); //  [ 'D', 'F', 'S' ]
 console.log(getRoute("A", "Z")); //  [ 'A', 'B', 'Z' ]
 console.log(getRoute("B", "S")); //  undefined
 
-// function getRoute(from, to) {
-//   const rootTo = to;
-//   const result = [];
-//   let stack = [...fetch(from)];
-
-//   while (stack.length > 0) {
-//     let currentPoint = stack.pop();
-//     let currentWay = fetch(currentPoint);
-
-//     if (currentWay && currentWay.includes(to)) {
-//       result.push({ point: currentPoint, way: currentWay });
-//       to = currentPoint;
-//       stack.push(...fetch(from));
-//     } else if (currentWay) {
-//       stack.push(...currentWay);
-//     }
-//   }
-
-//   return result.length === 0
-//     ? undefined
-//     : [from, ...result.reverse().map((el) => el.point), rootTo];
-// }
+*/
