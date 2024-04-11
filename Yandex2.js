@@ -52,32 +52,22 @@ const data = {
 };
 
 function showFiles(tree) {
-  const map = new Map();
+  let result = "";
   let level = 0;
-  map.set(tree.name, { level });
-  let res = tree.name + "\n";
-  level++;
-  const stack = [tree.children];
+  const stack = [{ element: tree, level }];
   while (stack.length > 0) {
-    const children = stack.pop();
+    const { element, level } = stack.pop();
+    result += addSpace(level ?? 0) + element.name + "\n";
 
-    for (let index = 0; index < children.length; index++) {
-      const element = children[index];
-      if (element.children) {
-        stack.push(element.children);
-        /*...children.splice(index, children.length) ,*/
-
-        res += addSpace(level) + element.name + "\n";
-        // break;
+    if (element.children) {
+      for (let index = element.children.length - 1; index >= 0; index--) {
+        const cur = element.children[index];
+        stack.push({ element: cur, level: level + 1 });
       }
-
-      res += addSpace(level) + element.name + "\n";
     }
-
-    level++;
   }
 
-  console.log(res);
+  console.log(result);
 }
 
 showFiles(data);
