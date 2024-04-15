@@ -27,9 +27,10 @@
 
 function typeWriter(delay, outputChar) {
   // your code here
+  const queue = new Set()
+  let counter = 0
 
   let currentString = "";
-  let counter = 0;
   let isFirst = true;
   function typeText() {
     const currentChar = currentString[0];
@@ -41,10 +42,13 @@ function typeWriter(delay, outputChar) {
     } else {
       isFirst = true;
     }
+
+    console.log(queue)
   }
 
   return (text) => {
     currentString += text;
+    queue.add(text)
     if (isFirst) {
       typeText();
       isFirst = false;
