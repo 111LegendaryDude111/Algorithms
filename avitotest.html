@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    #image-container {
+      width: 500px;
+      height: 150px;
+      color: red;
+    }
+  </style>
+  <body>
+    <main>
+      <div id="image-container"></div>
+      <button id="image-loading-button">Load Image</button>
+    </main>
+
+    <script>
+      const imageContainer = document.querySelector("#image-container");
+      const imageLoadingButton = document.querySelector(
+        "#image-loading-button"
+      );
+      const imageLink =
+        "https://random.imagecdn.app/v1/image?width=500&height=150";
+      const placeholderColorDefault = "green";
+      const placeholderColorError = "red";
+
+      function createImage(imageLink, onSuccess, onError) {
+        imageContainer.style.background = placeholderColorDefault
+        const image = document.createElement("img");
+        image.src = imageLink;
+
+        image.onerror = onError;
+        image.onload = onSuccess;
+        return image;
+      }
+
+      function onError() {
+        imageContainer.style.background = placeholderColorError;
+      }
+
+      function onSuccess() {
+        console.log("image loaded");
+        imageContainer.style.background = placeholderColorError
+      }
+
+      imageLoadingButton.addEventListener("click", () => {
+        console.log(
+          imageContainer.childNodes.forEach((el) =>
+            imageContainer.removeChild(el)
+          )
+        );
+        imageContainer.append(createImage(imageLink, onSuccess, onError));
+      });
+    </script>
+  </body>
+</html>
