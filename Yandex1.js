@@ -1,3 +1,27 @@
+class Queue {
+  inStack = [];
+  outStack = [];
+
+  add(item) {
+    this.inStack.push(item);
+
+    return this.inStack;
+  }
+
+  dequeue() {
+    if (this.outStack.length === 0) {
+      while (this.inStack.length > 0) {
+        this.outStack.push(this.inStack.pop());
+      }
+    }
+    return this.outStack.pop();
+  }
+
+  isEmpty() {
+    return this.inStack.length === 0 && this.outStack.length === 0;
+  }
+}
+
 /**
  * Нужно сделать эффект постепенного вывода текста.
  *
@@ -26,29 +50,25 @@
  */
 
 function typeWriter(delay, outputChar) {
-  // your code here
-  const queue = new Set()
-  let counter = 0
+  const queue = new Queue();
 
-  let currentString = "";
   let isFirst = true;
   function typeText() {
-    const currentChar = currentString[0];
-    currentString = currentString.substring(1, currentString.length);
+    const currentChar = queue.dequeue();
     outputChar(currentChar);
 
-    if (currentString) {
+    if (!queue.isEmpty()) {
       setTimeout(typeText, delay);
     } else {
       isFirst = true;
     }
-
-    console.log(queue)
   }
 
   return (text) => {
-    currentString += text;
-    queue.add(text)
+    for (let index = 0; index < text.length; index++) {
+      queue.add(text[index]);
+    }
+
     if (isFirst) {
       typeText();
       isFirst = false;
