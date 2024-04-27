@@ -1,15 +1,4 @@
 
-- сделать задание на typeWriter на очердеи 
-- переделать — getRoute на рабочий вариант
-
-
-
-
-Деревья
-https://leetcode.com/problems/invert-binary-tree/description/   ++++++
-https://leetcode.com/problems/same-tree/description/ +++++
-https://leetcode.com/problems/diameter-of-binary-tree/description/ +++++
-
 
 
 На вход бинарное дерево, элементы которого заглавные латинские буквы. Нужно понять, существуют ли два эквивалентных узла. 
@@ -23,3 +12,9 @@ H       G      D       G
                          \
                            D
 Здесь ответ: вершины, с воскл знаками. То есть поддерево от D равно поддереву от H. Две D в вправом поддерреве - тоже ответ
+
+
+; [h,d,g ] == [d,g,h] Ё
+
+
+TODO задачи на деревья + очереди
