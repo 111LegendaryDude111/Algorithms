@@ -46,50 +46,34 @@ function isEqual(arr1, arr2) {
   return true;
 }
 
-function hasEqualTrees(root, map = new Map(), isEqualTree = false) {
+function hasEqualTrees(root, map = new Map()) {
   if (!root) {
     return;
   }
 
-  if (isEqualTree) {
-    return;
+  const key = [root.val, root?.left?.val, root?.right?.val]
+    .filter(Boolean)
+    .sort()
+    .toString();
+
+  if (map.has(key)) {
+    return true;
   }
 
-  if (map.has(root.val)) {
-    const l = map.get(root.val).sort().filter(Boolean);
-    const r = [root.val, root?.left?.val, root?.right?.val]
-      .sort()
-      .filter(Boolean);
+  map.set(key, root);
 
-    const e = isEqual(l, r);
+  let bool = hasEqualTrees(root.left, map);
 
-    if (e) {
-      console.log("equal", l, r);
-      isEqualTree = true;
-      return true;
-    }
+  if (bool) {
+    return true;
   }
-  map.set(root.val, [root.val, root?.left?.val, root?.right?.val]);
 
-  hasEqualTrees(root.left, map, isEqualTree);
-  /*
-    Map(3) {
-        'F' => [ 'F', 'D', 'H' ],
-        'D' => [ 'D', 'H', 'G' ],
-        'H' => [ 'H', undefined, undefined ]
-        }
-  */
-  hasEqualTrees(root.right, map, isEqualTree);
-  /*
-       Map(4) {
-        'F' => [ 'F', 'D', 'H' ],
-        'H' => [ 'H', 'D', 'G' ],
-        'G' => [ 'G', undefined, 'D' ],
-        'D' => [ 'D', undefined, undefined ]
-} 
-*/
+  let bool2 = hasEqualTrees(root.right, map);
+  if (bool2) {
+    return true;
+  }
 
-  return map;
+  return;
 }
 
 console.log(hasEqualTrees(root));
