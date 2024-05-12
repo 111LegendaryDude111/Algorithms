@@ -1,20 +1,12 @@
 var RecentCounter = function () {
-  this.arr = [null];
+  this.arr = [];
 };
 
 RecentCounter.prototype.ping = function (t) {
   this.arr.push(t);
-  const range = [t - 3000, t];
-  let counter = 0;
 
-  for (let i = 1; i < this.arr.length; i++) {
-    const curEL = this.arr[i];
-    if (curEL >= range[0] && curEL <= range[1]) {
-      counter++;
-    }
-  }
-
-  return counter;
+  while (this.arr[0] < t - 3000) this.arr.shift();
+  return this.arr.length;
 };
 
 const recentCounter = new RecentCounter();
