@@ -10,7 +10,7 @@ const arrayFromKeys = <T, K extends keyof T>(obj: T, keys: K[]) => {
 const obj = {
   a: 1,
   b: "B",
-  "c d": null,
+  zzzz: null,
 };
 
-const result = arrayFromKeys(obj, ["c d"]);
+const result = arrayFromKeys(obj, ["c"]);
