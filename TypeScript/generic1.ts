@@ -13,4 +13,4 @@ const obj = {
   zzzz: null,
 };
 
-const result = arrayFromKeys(obj, ["c"]);
+// const result = arrayFromKeys(obj, ["c"]);
