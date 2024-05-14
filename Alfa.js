@@ -71,15 +71,11 @@
 // };
 // export default PleaseReviewMe;
 
-
 // ---------------------------------- ----------------- ----------------- -----------------
-
-
 
 /*
 Задача: улучшить типизацию функции
 */
-
 
 // const arrayFromKeys = <T, K extends keyof T>(obj: T, keys: K[]) => {
 //     const out: Array<T[K]> = [];
@@ -101,19 +97,15 @@
 // ---------------------------------- ----------------- ----------------- -----------------
 // хук написать который при первом вызове тру вернет а потом фолсе всегда
 
+// export default function App(props) {
+//   const isFirstRender = useFirstRender();
 
-export default function App(props) {
-  const isFirstRender = useFirstRender();
- 
-  if(isFirstRender) return null;
- 
-  return props.children
-}
+//   if (isFirstRender) return null;
 
-
+//   return props.children;
+// }
 
 // ---------------------------------- ----------------- ----------------- -----------------
-
 
 // 1. Реализовать функцию getMoney для банкомата, выдающего купюры.
 // На вход - сумма, на выходе объект с количеством купюр по каждому номиналу.
@@ -129,10 +121,10 @@ export default function App(props) {
 
 function getMoney(amount, limits) {
   const result = {};
-  const availebelNotes = [50, 100, 500, 1000, 5000].reverse();
+  const availableNotes = [50, 100, 500, 1000, 5000].reverse();
 
   if (limits) {
-    for (let note of availebelNotes) {
+    for (let note of availableNotes) {
       if (amount >= note && limits[note] > 0) {
         const count = Math.min(Math.floor(amount / note), limits[note]);
         limits[note] -= count;
@@ -143,7 +135,7 @@ function getMoney(amount, limits) {
       }
     }
   } else {
-    for (let note of availebelNotes) {
+    for (let note of availableNotes) {
       if (amount >= note) {
         const count = Math.floor(amount / note);
 
@@ -162,8 +154,10 @@ function getMoney(amount, limits) {
   return result;
 }
 
-// ---------------------------------- ----------------- ----------------- -----------------
+console.log(getMoney(6200)); //return {5000: 1, 1000: 1, 500: 0, 100: 2, 50: 0}
+console.log(getMoney(6200, { 5000: 0, 1000: 7, 100: 5 })); // return {5000: 0, 1000: 6, 100: 2}
 
+// ---------------------------------- ----------------- ----------------- -----------------
 
 /*Есть массив операций.
   Необходимо операции отсортировать по дате и сгруппировать их по году, а в качестве 
@@ -180,72 +174,69 @@ function getMoney(amount, limits) {
     ]
   }
 */
-const operations = [
-  {
-    date: "2017-07-31",
-    amount: "5422",
-  },
-  {
-    date: "2017-06-30",
-    amount: "5220",
-  },
-  {
-    date: "2017-05-31",
-    amount: "5365",
-  },
-  {
-    date: "2017-08-31",
-    amount: "5451",
-  },
-  {
-    date: "2017-09-30",
-    amount: "5303",
-  },
-  {
-    date: "2018-03-31",
-    amount: "5654",
-  },
-  {
-    date: "2017-10-31",
-    amount: "5509",
-  },
-  {
-    date: "2017-12-31",
-    amount: "5567",
-  },
-  {
-    date: "2018-01-31",
-    amount: "5597",
-  },
-  {
-    date: "2017-11-30",
-    amount: "5359",
-  },
-  {
-    date: "2018-02-28",
-    amount: "5082",
-  },
-  {
-    date: "2018-04-14",
-    amount: "2567",
-  },
-];
+// const operations = [
+//   {
+//     date: "2017-07-31",
+//     amount: "5422",
+//   },
+//   {
+//     date: "2017-06-30",
+//     amount: "5220",
+//   },
+//   {
+//     date: "2017-05-31",
+//     amount: "5365",
+//   },
+//   {
+//     date: "2017-08-31",
+//     amount: "5451",
+//   },
+//   {
+//     date: "2017-09-30",
+//     amount: "5303",
+//   },
+//   {
+//     date: "2018-03-31",
+//     amount: "5654",
+//   },
+//   {
+//     date: "2017-10-31",
+//     amount: "5509",
+//   },
+//   {
+//     date: "2017-12-31",
+//     amount: "5567",
+//   },
+//   {
+//     date: "2018-01-31",
+//     amount: "5597",
+//   },
+//   {
+//     date: "2017-11-30",
+//     amount: "5359",
+//   },
+//   {
+//     date: "2018-02-28",
+//     amount: "5082",
+//   },
+//   {
+//     date: "2018-04-14",
+//     amount: "2567",
+//   },
+// ];
 
-const result = operations
-  .sort((a, b) => new Date(a.date) - new Date(b.date))
-  .reduce((acc, { date }) => {
-    const [year, month, day] = date.split("-");
-    if (!acc[year]) acc[year] = [];
-    acc[year].push(`${month}-${day}`);
-    return acc;
-  }, {});
+// const result = operations
+//   .sort((a, b) => new Date(a.date) - new Date(b.date))
+//   .reduce((acc, { date }) => {
+//     const [year, month, day] = date.split("-");
+//     if (!acc[year]) acc[year] = [];
+//     acc[year].push(`${month}-${day}`);
+//     return acc;
+//   }, {});
 
-console.log(result);
-
-
+// console.log(result);
 
 // ---------------------------------- ----------------- ----------------- -----------------
-
 
 // setTimeout(()=>console.log(2), 0);
 
@@ -273,46 +264,44 @@ console.log(result);
 
 // 2 1
 
+// let value = 2;
 
-let value = 2;
+// function showValue() {
+//   console.log(`showValue ${value}`);
+// }
 
-function showValue() {
-  console.log(`showValue ${value}`);
-}
+// function wrapper() {
+//   var value = 3;
 
-function wrapper() {
-  var value = 3;
+//   console.log(`wrapper ${value}`);
 
-  console.log(`wrapper ${value}`);
+//   showValue();
+// }
 
-  showValue();
-}
+// wrapper();
 
-wrapper();
+// // wrapper 3
+// // showValue 2
 
-// wrapper 3
-// showValue 2
+// // ---------------------------------- ----------------- ----------------- -----------------
 
+// var side = 20;
 
-// ---------------------------------- ----------------- ----------------- -----------------
+// const square = {
+//   side: 5,
+//   area() {
+//     return this.side * this.side;
+//   },
+//   perimeter: () => 4 * this.side,
+// };
 
-var side = 20;
+// console.log(square.area());
+// //  25
+// console.log(square.perimeter());
+// // 80
 
-const square = {
-  side: 5,
-  area() {
-    return this.side * this.side;
-  },
-  perimeter: () => 4 * this.side,
-};
-
-console.log(square.area());
-//  25
-console.log(square.perimeter());
-// 80
-
-const bindedArea = square.area.bind(square).bind({
-  side: 7,
-});
-console.log(bindedArea());
-//25
+// const bindedArea = square.area.bind(square).bind({
+//   side: 7,
+// });
+// console.log(bindedArea());
+// //25
