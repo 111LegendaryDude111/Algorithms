@@ -1,13 +1,19 @@
 var isAnagram = function (s, t) {
+//cpu - O(2N) mem - O(N)
   if (s.length !== t.length) return false;
   const m1 = getMap(s);
-  const m2 = getMap(t);
 
-  for (const l of s) {
-    const fEl = m1[l];
-    const sEl = m2[l];
-    if (fEl !== sEl) {
+  for (let index = 0; index < t.length; index++) {
+    const element = t[index];
+
+    if (!m1[element]) {
       return false;
+    }
+
+    if (m1[element] === 0) {
+      delete m1[element];
+    } else {
+      m1[element] = m1[element] - 1;
     }
   }
 
