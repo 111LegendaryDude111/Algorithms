@@ -37,32 +37,57 @@
 Автоколонна движется со скоростью 1, пока не достигнет цели.
 */
 
+// var carFleet = function (target, position, speed) {
+//   if (position.length === 1) {
+//     return 1;
+//   }
+
+//   const map = new Map();
+
+//   for (let index = 0; index < position.length; index++) {
+//     const currentCar = index;
+//     const currentSpeed = position[index];
+//     const currentPosition = speed[index];
+
+//     const meetingPoint = (target - currentPosition) * currentSpeed;
+//     const point = meetingPoint <= target ? meetingPoint : currentPosition;
+
+//     if (map.has(point)) {
+//       const pointVal = map.get(point).push(index);
+
+//       map.set(point, pointVal);
+//     } else {
+//       map.set(point, []);
+//     }
+//   }
+
+//   return map.size;
+// };
+
 var carFleet = function (target, position, speed) {
-  if (position.length === 1) {
-    return 1;
-  }
+  const n = position.length;
+  const inds = []; // 0 1 2 3 4 5 6
+  for (let i = 0; i < n; i++) inds.push(i);
 
-  const map = new Map();
+  inds.sort((a, b) => position[b] - position[a]); //
 
-  for (let index = 0; index < position.length; index++) {
-    const currentCar = index;
-    const currentSpeed = position[index];
-    const currentPosition = speed[index];
+  console.log(inds);
+  let cur = inds[0];
+  let result = 1;
 
-    const meetingPoint = currentPosition + currentSpeed;
-    const point = meetingPoint <= target ? meetingPoint : currentPosition;
-
-    if (map.has(point)) {
-      const pointVal = map.get(point).push(index);
-
-      map.set(point, pointVal);
-    } else {
-      map.set(point, []);
+  for (let i = 1; i < n; i++) {
+    let idx = inds[i];
+    if (
+      (target - position[idx]) * speed[cur] >
+      (target - position[cur]) * speed[idx]
+    ) {
+      result++;
+      cur = idx;
     }
   }
 
-  return map.size;
+  return result;
 };
 
 console.log(carFleet(12, [10, 8, 0, 5, 3], [2, 4, 1, 1, 3]));
-console.log(carFleet(12, [0, 2, 4], [4, 2, 1]));
+// console.log(carFleet(12, [0, 2, 4], [4, 2, 1]));
