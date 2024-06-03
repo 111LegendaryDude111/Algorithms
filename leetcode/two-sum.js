@@ -6,7 +6,7 @@ var twoSum = function (nums, target) {
     const difference = target - element;
 
     if (map.has(difference)) {
-      return [map.get(difference), index];
+      return [map.get(difference) + 1, index + 1];
     }
 
     map.set(element, index);
@@ -16,3 +16,4 @@ var twoSum = function (nums, target) {
 };
 
 console.log(twoSum([3, 4, 5, 6], 7));
+console.log(twoSum([2, 7, 11, 15], 9));
