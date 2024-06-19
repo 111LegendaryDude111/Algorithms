@@ -12,7 +12,7 @@
 
 */
 
-const getMax = (array) => {
+const getMax = (array, min) => {
   let c = 0;
   let r = 0;
   array.forEach((el, i, a) => {
@@ -27,6 +27,14 @@ const getMax = (array) => {
       r = Math.max(r, c);
     }
   });
+
+  for (let index = 0; index < min * 2; index++) {
+    if (r % min === 0) {
+      break;
+    } else {
+      r--;
+    }
+  }
 
   return r;
 };
@@ -58,9 +66,7 @@ function findDayoffs(dayOffsCount, startedArray) {
   return result;
 }
 
-console.log(findDayoffs(2, [0, 0, 1, 0, 0]));
-//2
-console.log(findDayoffs(1, [0, 1, 0, 0]));
-//4
-console.log(findDayoffs(3, [0, 0, 1, 0, 0]));
-//0
+console.log(findDayoffs(2, [0, 0, 1, 0, 0])); //2
+console.log(findDayoffs(1, [0, 1, 0, 0])); //4
+console.log(findDayoffs(3, [0, 0, 1, 0, 0])); //0
+console.log(findDayoffs(3, [0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1])); // 2
