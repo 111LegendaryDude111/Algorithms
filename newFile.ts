@@ -1,3 +1,0 @@
-function asdf() {
-  console.log();
-}
