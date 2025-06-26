@@ -1,7 +1,7 @@
 // merge([1, 7, 9, 13, 15] , [4, 5, 8, 14]) => [1, 4, 5, 7, 8, 9, 13, 14, 15]
 
 const arr1 = [1, 7, 9, 13, 15],
-  arr2 = [4, 5,7, 8, 14];
+  arr2 = [4, 5, 7, 8, 14];
 
 function merge(array1, array2) {
   const length = array1.length + array2.length;
@@ -24,6 +24,4 @@ function merge(array1, array2) {
   return result;
 }
 
-
 console.log(merge(arr1, arr2));
-
